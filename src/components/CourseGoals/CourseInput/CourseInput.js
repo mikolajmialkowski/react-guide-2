@@ -4,14 +4,15 @@ import "./CourseInput.css";
 
 const CourseInput = (props) => {
   const [enteredValue, setEnteredValue] = useState("")
-  const [labelStyleObject, setLabelStyleObject] = useState({ color: "black" })
-  const [inputStyleObject, setInputStyleObject] = useState({ borderColor: "black" })
+  const [isValidInput, setIsValidInput] = useState(true)
+  //const [labelStyleObject, setLabelStyleObject] = useState({ color: "black" })
+  //const [inputStyleObject, setInputStyleObject] = useState({ borderColor: "black" })
 
   const goalInputChangeHandler = (event) => {
     setEnteredValue(event.target.value)
 
     if(event.target.value.trim().length > 0)
-      markCorrectInput()
+      setIsValidInput(true)
 
   };
 
@@ -19,47 +20,46 @@ const CourseInput = (props) => {
     event.preventDefault()
 
     if (enteredValue.trim().length === 0) {
-      markBadInput()
+      setIsValidInput(false)
       return;
     }
 
     props.onAddGoal(enteredValue)
-    markCorrectInput()
+    setIsValidInput(true)
     setEnteredValue("")
   };
 
-  const markCorrectInput = () => {
-    setLabelStyleObject((previousState) => ({
-      ...previousState,
-      color: "black"
-    }));
+  // const markCorrectInput = () => {
+  //   setLabelStyleObject((previousState) => ({
+  //     ...previousState,
+  //     color: "black"
+  //   }));
 
-    setInputStyleObject((previousState) => ({
-      ...previousState,
-      borderColor: "black",
-      background: "transparent"
-    }));
-  }
+  //   setInputStyleObject((previousState) => ({
+  //     ...previousState,
+  //     borderColor: "black",
+  //     background: "transparent"
+  //   }));
+  // }
 
-  const markBadInput = () => {
-    setLabelStyleObject((previousState) => ({
-      ...previousState,
-      color: "red"
-    }));
+  // const markBadInput = () => {
+  //   setLabelStyleObject((previousState) => ({
+  //     ...previousState,
+  //     color: "red"
+  //   }));
 
-    setInputStyleObject((previousState) => ({
-      ...previousState,
-      borderColor: "red",
-      background: "salmon" //no camel case in "background" !
-    }));
-  }
+  //   setInputStyleObject((previousState) => ({
+  //     ...previousState,
+  //     borderColor: "red",
+  //     background: "salmon" //no camel case in "background" !
+  //   }));
+  // }
 
   return (
     <form onSubmit={formSubmitHandler}>
-      <div className="form-control">
-        <label style={labelStyleObject}>Course Goal</label>
+      <div className={`form-control ${isValidInput ? "" : "invalid"}`}>
+        <label>Course Goal</label>
         <input
-          style={inputStyleObject}
           type="text"
           onChange={goalInputChangeHandler}
           value={enteredValue}
